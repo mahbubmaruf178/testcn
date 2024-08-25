@@ -2,9 +2,8 @@ import type { NextRequest } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import { drizzle } from "drizzle-orm/xata-http";
 import { sql } from "drizzle-orm";
-export const config = {
-  runtime: "nodejs", // or 'node'
-};
+// edge runtime
+export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
   let responseText = "Hello World";
