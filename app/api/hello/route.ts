@@ -1,7 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { Client } from "pg";
-import { drizzle } from "drizzle-orm/node-postgres";
+import { drizzle } from "drizzle-orm/xata-http";
 import { sql } from "drizzle-orm";
 export const config = {
   runtime: "nodejs", // or 'node'
@@ -9,11 +8,14 @@ export const config = {
 
 export async function GET(request: NextRequest) {
   let responseText = "Hello World";
-  const client = new Client({
-    connectionString:
-      "postgresql://sllj1f:xau_D1iXaZbeN4WYHR57Xx56ow1cGjRdTxwy@us-east-1.sql.xata.sh/premiumzone:main?sslmode=require",
-  });
-  await client.connect();
+  // const client = new Client({
+  //   connectionString:
+  //     "postgresql://sllj1f:xau_D1iXaZbeN4WYHR57Xx56ow1cGjRdTxwy@us-east-1.sql.xata.sh/premiumzone:main?sslmode=require",
+  // });
+  // await client.connect();
+
+  const client = getRequestContext().env.XATA_CLIENT;
+
   const db = drizzle(client);
   // response all table name
   // Execute the SQL query to get all table names from the 'public' schema
