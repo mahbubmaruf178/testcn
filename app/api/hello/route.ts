@@ -3,7 +3,9 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 import { Client } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { sql } from "drizzle-orm";
-export const runtime = "edge";
+export const config = {
+  runtime: "nodejs", // or 'node'
+};
 
 export async function GET(request: NextRequest) {
   let responseText = "Hello World";
