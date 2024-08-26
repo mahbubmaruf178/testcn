@@ -2,5 +2,5 @@
 // by running `wrangler types --env-interface CloudflareEnv env.d.ts`
 
 interface CloudflareEnv {
-  XATA_CLIENT: Client;
+  MY_DB: DurableObjectNamespace;
 }

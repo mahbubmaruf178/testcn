@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { drizzle } from "drizzle-orm/xata-http";
+import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm";
 // edge runtime
 export const runtime = "edge";
@@ -8,20 +8,14 @@ export const runtime = "edge";
 export async function GET(request: NextRequest) {
   try {
     let responseText = "Hello World";
-    // const client = new Client({
-    //   connectionString:
-    //     "postgresql://sllj1f:xau_D1iXaZbeN4WYHR57Xx56ow1cGjRdTxwy@us-east-1.sql.xata.sh/premiumzone:main?sslmode=require",
-    // });
-    // await client.connect();
-
-    const client = getRequestContext().env.XATA_CLIENT;
-
-    const db = drizzle(client);
+    const d1 = await getRequestContext().env.MY_DB;
+    const db = drizzle(d1 as unknown as D1Database);
     // response all table name
     // Execute the SQL query to get all table names from the 'public' schema
-    const tables = await db.execute(
-      sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`
-    );
+    const tables = await db
+      .select()
+      .from(sql`public`)
+      .run();
 
     // In the edge runtime you can use Bindings that are available in your application
     // (for more details see:
