@@ -10,13 +10,10 @@ export async function GET(request: NextRequest) {
     let responseText = "Hello World";
     const d1 = await getRequestContext().env.MY_DB;
     const db = drizzle(d1 as unknown as D1Database);
-    // response all table name
-    // Execute the SQL query to get all table names from the 'public' schema
-    const tables = await db
-      .select()
-      .from(sql`public`)
-      .run();
-
+    // check that the database is connected
+    const tables = await db.run(
+      sql`SELECT * FROM sqlite_schema WHERE type='table' AND name NOT LIKE 'sqlite_%'`
+    );
     // In the edge runtime you can use Bindings that are available in your application
     // (for more details see:
     //    - https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#use-bindings-in-your-nextjs-application
